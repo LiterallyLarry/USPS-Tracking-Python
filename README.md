@@ -14,7 +14,7 @@ Your item arrived at our CHICAGO METRO origin facility on July 13, 2016 at 9:17 
 
 ## Usage
 
-You can track a single/multiple shipment as follows:
+You can track single/multiple shipment(s) as follows:
 
 ```
 python3 tracking.py

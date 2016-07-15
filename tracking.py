@@ -32,7 +32,7 @@ if __name__ == "__main__":
         track_ids = [ track_id ];
     track_xml = usps_track(track_ids);
     track_result = ElementTree.ElementTree(ElementTree.fromstring(track_xml));
-    for result in track_result.findall('Description'):
+    for result in track_result.findall('Description'): # Print error messages
         print(result.text);
-    for result in track_result.findall('.//TrackSummary'):
+    for result in track_result.findall('.//TrackSummary'): # Print tracking messages
         print(result.text);
