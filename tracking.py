@@ -3,7 +3,7 @@
 # Tested on Python 3.4.2 running on Debian 8.7
 # https://github.com/LiterallyLarry/USPS-Tracking-Python
 #
-# You must provide your API key in config.json as  before running this program! You can sign up for an API key here: https://www.usps.com/business/web-tools-apis/welcome.htm
+# You must provide your API key in config.json as 'api_key' before running this program! You can sign up for an API key here: https://www.usps.com/business/web-tools-apis/welcome.htm
 
 from urllib import request, parse
 from sys import argv
