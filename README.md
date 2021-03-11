@@ -1,7 +1,11 @@
 # USPS-Tracking-Python
 Track your packages with the USPS Track Request API using Python 3
 
-IMPORTANT! You must provide your API key in config.json before use! Sign up at: https://www.usps.com/business/web-tools-apis/welcome.htm
+IMPORTANT: You must provide your API key in config.json first before using.
+Sign up at: https://www.usps.com/business/web-tools-apis/welcome.htm
+
+You may also provide the USPS API key as an environment variable: `USPS_API_KEY`
+which will be used if program does not find an API key in the config.json file.
 
 ## Usage
 
@@ -85,4 +89,5 @@ user@system:~$ python3 tracking.py ABC1234567890 -mn
 Your item was delivered at 6:14 pm on July 6, 2017 in PHILADELPHIA, PA 19104.
 ```
 
-This program was tested on Python 3.4.2 running on Debian 8.7 and may not be compatible with previous releases.
+This program was tested with Python 3.5.3 on Debian 10, Python 3.6.8 on Ubuntu 18.04, and may not be compatible with previous releases.
+

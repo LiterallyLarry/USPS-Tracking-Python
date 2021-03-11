@@ -14,13 +14,18 @@ import argparse, json, sys, os
 USPS_API_URL = "http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2"
 
 path = os.path.dirname(os.path.realpath(__file__))
+config_file_path = os.path.join(path, "config.json")
 
-with open(os.path.join(path, "config.json")) as config_file:
-    config = json.load(config_file)
-    api_key = config.get("api_key")
+if os.path.isfile(config_file_path):
+    with open(config_file_path) as config_file:
+        config = json.load(config_file)
+        api_key = config.get("api_key")
 
 if not api_key:
-    sys.exit("Error: Could not find USPS API key in config.json!")
+    api_key = os.getenv('USPS_API_KEY')
+
+if not api_key:
+    sys.exit("Error: Could not find USPS API key! Please provide one in config.json or as an environment variable: USPS_API_KEY")
 
 parser = argparse.ArgumentParser(description='Tracks USPS numbers via Python.')
 
@@ -51,28 +56,22 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.tracking_numbers: # Arguments support multiple tracking numbers
         track_ids = args.tracking_numbers
-        #track_ids = argv[1:]
     else:
-        #track_id = input() # User input supports only a single number
         track_id = input('Enter tracking numbers separated by spaces: ') # User input supports multiple tracking numbers split with spaces
         if len(track_id) < 1:
             exit(0)
         track_ids = track_id.split(' ')
-        #track_ids = [ track_id ]
     real = []
     for id in track_ids:
         if id[0] != '#':
             real.append(id)
     track_ids = real
     track_xml = usps_track(track_ids)
-#    print(track_xml)
     track_result = ElementTree.ElementTree(ElementTree.fromstring(track_xml))
     if not args.show_minimal:
         print('OK!')
     for result in track_result.findall('Description'):
         print(result.text)
-#    for result in track_result.findall('.//TrackSummary'):
-#        print(result.text)
     for number, result in enumerate(track_result.findall('.//TrackInfo')):
         if args.show_tracking_number:
             track_num = ' (%s)' % track_ids[number]
@@ -94,3 +93,4 @@ if __name__ == "__main__":
                         print('  └ %s' % detailed_result.text)
                     else:
                         print('  ├ %s' % detailed_result.text)
+
