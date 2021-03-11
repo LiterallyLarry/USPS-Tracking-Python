@@ -70,6 +70,11 @@ if __name__ == "__main__":
     track_result = ElementTree.ElementTree(ElementTree.fromstring(track_xml))
     if not args.show_minimal:
         print('OK!')
+    if track_result.getroot().tag == 'Error':
+        error_number = track_result.find('Number').text
+        error_message = track_result.find('Description').text
+        print("An error has occurred (Error Number {}):\n{}".format(error_number, error_message))
+        sys.exit(2)
     for result in track_result.findall('Description'):
         print(result.text)
     for number, result in enumerate(track_result.findall('.//TrackInfo')):
@@ -79,8 +84,8 @@ if __name__ == "__main__":
             track_num = ''
         summary = result.find('TrackSummary')
         if summary is None:
-            print('Error in XML!')
-            print(track_xml)
+            print('There was an error handling the XML response: {}'.format(track_xml))
+            sys.exit(2)
         else:
             if args.show_minimal:
                 print('%s' % summary.text)
