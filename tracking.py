@@ -39,7 +39,7 @@ parser.add_argument('-n', action='store_false', default=True,
                     help='Hide extended tracking information')
 parser.add_argument('-m', action='store_true', default=False,
                     dest='show_minimal',
-                    help='Repress UI')
+                    help='Display tracking information concisely (minimal UI)')
 
 def usps_track(numbers_list):
     xml = "<TrackRequest USERID=\"%s\">" % api_key
@@ -68,8 +68,6 @@ if __name__ == "__main__":
     track_ids = real
     track_xml = usps_track(track_ids)
     track_result = ElementTree.ElementTree(ElementTree.fromstring(track_xml))
-    if not args.show_minimal:
-        print('OK!')
     if track_result.getroot().tag == 'Error':
         error_number = track_result.find('Number').text
         error_message = track_result.find('Description').text

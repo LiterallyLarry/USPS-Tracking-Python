@@ -24,7 +24,6 @@ If you run the program without a tracking number, it will prompt you for a track
 ```
 user@system:~$ python3 tracking.py
 Enter tracking numbers separated by spaces: ABC1234567890 DEF1234567890 GHI1234567890
-OK!
 
 Package #1:
  Your item arrived at the PHILADELPHIA, PA 19101 post office at 11:02 am on June 19, 2017 and is ready for pickup.
