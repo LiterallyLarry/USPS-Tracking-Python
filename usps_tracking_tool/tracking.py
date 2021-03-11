@@ -15,43 +15,7 @@ USPS_API_URL = "http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2"
 API_KEY_CONFIG_FILE = "config.json"
 API_KEY_ENV_VAR = "USPS_API_KEY"
 
-path = os.path.dirname(os.path.realpath(__file__))
-config_file_path = os.path.join(path, API_KEY_CONFIG_FILE)
-
-api_key_from_env = False
-
-if os.path.isfile(config_file_path):
-    with open(config_file_path) as config_file:
-        config = json.load(config_file)
-        api_key = config.get("api_key")
-
-if not api_key:
-    api_key = os.getenv(API_KEY_ENV_VAR)
-    api_key_from_env = True
-
-if not api_key:
-    print("Error: Could not find USPS API key! Please provide one in {} or as environment variable {}".format(API_KEY_CONFIG_FILE, API_KEY_ENV_VAR))
-    print("Location of {}: {}".format(API_KEY_CONFIG_FILE, config_file_path))
-    sys.exit(2)
-
-parser = argparse.ArgumentParser(description="Tracks USPS numbers via Python.")
-
-parser.add_argument("tracking_numbers", metavar="TRACKING_NUMBER", type=str, nargs="*",
-                    help="a tracking number")
-parser.add_argument("-s", action="store_true", default=False,
-                    dest="show_tracking_number",
-                    help="Show tracking number in output")
-parser.add_argument("-n", action="store_false", default=True,
-                    dest="show_tracking_extended",
-                    help="Hide extended tracking information")
-parser.add_argument("-m", action="store_true", default=False,
-                    dest="show_minimal",
-                    help="Display tracking information concisely (minimal UI)")
-parser.add_argument("-a", action="store_true", default=False,
-                    dest="get_api_key",
-                    help="Display the API key currently being used")
-
-def usps_track(numbers_list):
+def usps_track(api_key, numbers_list):
     xml = "<TrackRequest USERID=\"{}\">".format(api_key)
     for track_id in numbers_list:
         xml += "<TrackID ID=\"{}\"></TrackID>".format(track_id)
@@ -62,7 +26,43 @@ def usps_track(numbers_list):
     request_obj.close()
     return result
 
-if __name__ == "__main__":
+def main():
+    path = os.path.dirname(os.path.realpath(__file__))
+    config_file_path = os.path.join(path, API_KEY_CONFIG_FILE)
+    api_key_from_env = False
+    api_key = None
+
+    if os.path.isfile(config_file_path):
+        with open(config_file_path) as config_file:
+            config = json.load(config_file)
+            api_key = config.get("api_key")
+
+    if not api_key:
+        api_key = os.getenv(API_KEY_ENV_VAR)
+        api_key_from_env = True
+
+    if not api_key:
+        print("Error: Could not find USPS API key! Please provide one in {} or as environment variable {}".format(API_KEY_CONFIG_FILE, API_KEY_ENV_VAR))
+        print("Location of {}: {}".format(API_KEY_CONFIG_FILE, config_file_path))
+        sys.exit(2)
+
+    parser = argparse.ArgumentParser(description="Tracks USPS numbers via Python.")
+
+    parser.add_argument("tracking_numbers", metavar="TRACKING_NUMBER", type=str, nargs="*",
+                        help="a tracking number")
+    parser.add_argument("-s", action="store_true", default=False,
+                        dest="show_tracking_number",
+                        help="Show tracking number in output")
+    parser.add_argument("-n", action="store_false", default=True,
+                        dest="show_tracking_extended",
+                        help="Hide extended tracking information")
+    parser.add_argument("-m", action="store_true", default=False,
+                        dest="show_minimal",
+                        help="Display tracking information concisely (minimal UI)")
+    parser.add_argument("-a", action="store_true", default=False,
+                        dest="get_api_key",
+                        help="Display the API key currently being used")
+    
     args = parser.parse_args()
     if args.get_api_key:
         print("The current API key being used is: {}".format(api_key))
@@ -83,7 +83,7 @@ if __name__ == "__main__":
         if id[0] != "#":
             real.append(id)
     track_ids = real
-    track_xml = usps_track(track_ids)
+    track_xml = usps_track(api_key, track_ids)
     track_result = ElementTree.ElementTree(ElementTree.fromstring(track_xml))
     if track_result.getroot().tag == "Error":
         error_number = track_result.find("Number").text
@@ -114,3 +114,6 @@ if __name__ == "__main__":
                     else:
                         print("  ├ {}".format(detailed_result.text))
 
+if __name__ == "__main__":
+    main()
+    

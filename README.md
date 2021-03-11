@@ -1,5 +1,9 @@
 # USPS-Tracking-Python
-Track your packages with the USPS Track Request API using Python 3
+![PyPI - License](https://img.shields.io/pypi/l/usps-tracking-tool) ![PyPI](https://img.shields.io/pypi/v/usps-tracking-tool)
+
+Track your packages with the USPS Track Request API using Python 3.
+
+A simple CLI package tracking tool with no dependencies required.
 
 IMPORTANT: You must provide your API key in config.json first before using.
 Sign up at: https://www.usps.com/business/web-tools-apis/welcome.htm
@@ -7,14 +11,25 @@ Sign up at: https://www.usps.com/business/web-tools-apis/welcome.htm
 You may also provide the USPS API key as an environment variable: `USPS_API_KEY`
 which can be used if program does not see an API key in the config.json file.
 
+## Installation
+
+Available through PyPI: https://pypi.org/project/usps-tracking-tool/
+
+`pip3 install usps_tracking_tool`
+
+After installing, you can run this program in the command line by using the command `usps_tracking_tool`.
+
 ## Usage
+
+If running from the project directory, the program is available in the `usps_tracking_tool` folder. 
+In that case, please substitute the `usps-tracking-tool` command in the below examples with `python3 tracking.py`.
 
 You can track single/multiple shipment(s) by executing the program as follows:
 
 ```
-python3 tracking.py
-python3 tracking.py ABC1234567890
-python3 tracking.py ABC1234567890 DEF1234567890 GHI1234567890
+usps-tracking-tool
+usps-tracking-tool ABC1234567890
+usps-tracking-tool ABC1234567890 DEF1234567890 GHI1234567890
 ```
 
 If you run the program without a tracking number, it will prompt you for a tracking number (you may input multiple tracking numbers by separating them with spaces).
@@ -22,7 +37,7 @@ If you run the program without a tracking number, it will prompt you for a track
 ## Example
 
 ```
-user@system:~$ python3 tracking.py
+user@system:~$ usps-tracking-tool
 Enter tracking numbers separated by spaces: ABC1234567890 DEF1234567890 GHI1234567890
 
 Package #1:
@@ -54,8 +69,8 @@ Package #3:
 You can use arguments to change the output format, like so:
 
 ```
-user@system:~$ python3 tracking.py -h
-usage: tracking.py [-h] [-s] [-n] [-m] [-a]
+user@system:~$ usps-tracking-tool -h
+usage: usps-tracking-tool [-h] [-s] [-n] [-m] [-a]
                    [TRACKING_NUMBER [TRACKING_NUMBER ...]]
 
 Tracks USPS numbers via Python.
@@ -72,7 +87,7 @@ optional arguments:
 ```
 
 ```
-user@system:~$ python3 tracking.py ABC1234567890 -m
+user@system:~$ usps-tracking-tool ABC1234567890 -m
 Your item was delivered at 6:14 pm on July 6, 2017 in PHILADELPHIA, PA 19104.
   ├ Sorting Complete, July 6, 2017, 10:29 am, PHILADELPHIA, PA 19101
   ├ Available for Pickup, July 6, 2017, 8:29 am, PHILADELPHIA, PA 19101
@@ -86,12 +101,12 @@ Your item was delivered at 6:14 pm on July 6, 2017 in PHILADELPHIA, PA 19104.
 ```
 
 ```
-user@system:~$ python3 tracking.py ABC1234567890 -mn
+user@system:~$ usps-tracking-tool ABC1234567890 -mn
 Your item was delivered at 6:14 pm on July 6, 2017 in PHILADELPHIA, PA 19104.
 ```
 
 ```
-user@system:~$ python3 tracking.py -a
+user@system:~$ usps-tracking-tool -a
 The current API key being used is: API_KEY_HERE
 API key is being sourced from environment variable USPS_API_KEY
 ```
