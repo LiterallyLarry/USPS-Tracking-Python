@@ -5,7 +5,7 @@ IMPORTANT: You must provide your API key in config.json first before using.
 Sign up at: https://www.usps.com/business/web-tools-apis/welcome.htm
 
 You may also provide the USPS API key as an environment variable: `USPS_API_KEY`
-which will be used if program does not find an API key in the config.json file.
+which can be used if program does not see an API key in the config.json file.
 
 ## Usage
 
@@ -55,7 +55,8 @@ You can use arguments to change the output format, like so:
 
 ```
 user@system:~$ python3 tracking.py -h
-usage: tracking.py [-h] [-s] [-n] [-m] [TRACKING_NUMBER [TRACKING_NUMBER ...]]
+usage: tracking.py [-h] [-s] [-n] [-m] [-a]
+                   [TRACKING_NUMBER [TRACKING_NUMBER ...]]
 
 Tracks USPS numbers via Python.
 
@@ -66,7 +67,8 @@ optional arguments:
   -h, --help       show this help message and exit
   -s               Show tracking number in output
   -n               Hide extended tracking information
-  -m               Repress UI
+  -m               Display tracking information concisely (minimal UI)
+  -a               Display the API key currently being used
 ```
 
 ```
@@ -86,6 +88,12 @@ Your item was delivered at 6:14 pm on July 6, 2017 in PHILADELPHIA, PA 19104.
 ```
 user@system:~$ python3 tracking.py ABC1234567890 -mn
 Your item was delivered at 6:14 pm on July 6, 2017 in PHILADELPHIA, PA 19104.
+```
+
+```
+user@system:~$ python3 tracking.py -a
+The current API key being used is: API_KEY_HERE
+API key is being sourced from environment variable USPS_API_KEY
 ```
 
 This program was tested with Python 3.5.3 on Debian 10, Python 3.6.8 on Ubuntu 18.04, and may not be compatible with previous releases.

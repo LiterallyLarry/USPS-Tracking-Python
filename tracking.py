@@ -12,9 +12,13 @@ from xml.etree import ElementTree
 import argparse, json, sys, os
 
 USPS_API_URL = "http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2"
+API_KEY_CONFIG_FILE = "config.json"
+API_KEY_ENV_VAR = "USPS_API_KEY"
 
 path = os.path.dirname(os.path.realpath(__file__))
-config_file_path = os.path.join(path, "config.json")
+config_file_path = os.path.join(path, API_KEY_CONFIG_FILE)
+
+api_key_from_env = False
 
 if os.path.isfile(config_file_path):
     with open(config_file_path) as config_file:
@@ -22,10 +26,13 @@ if os.path.isfile(config_file_path):
         api_key = config.get("api_key")
 
 if not api_key:
-    api_key = os.getenv('USPS_API_KEY')
+    api_key = os.getenv(API_KEY_ENV_VAR)
+    api_key_from_env = True
 
 if not api_key:
-    sys.exit("Error: Could not find USPS API key! Please provide one in config.json or as an environment variable: USPS_API_KEY")
+    print("Error: Could not find USPS API key! Please provide one in {} or as environment variable {}".format(API_KEY_CONFIG_FILE, API_KEY_ENV_VAR))
+    print("Location of {}: {}".format(API_KEY_CONFIG_FILE, config_file_path))
+    sys.exit(2)
 
 parser = argparse.ArgumentParser(description='Tracks USPS numbers via Python.')
 
@@ -40,6 +47,9 @@ parser.add_argument('-n', action='store_false', default=True,
 parser.add_argument('-m', action='store_true', default=False,
                     dest='show_minimal',
                     help='Display tracking information concisely (minimal UI)')
+parser.add_argument('-a', action='store_true', default=False,
+                    dest='get_api_key',
+                    help='Display the API key currently being used')
 
 def usps_track(numbers_list):
     xml = "<TrackRequest USERID=\"%s\">" % api_key
@@ -54,7 +64,14 @@ def usps_track(numbers_list):
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    if args.tracking_numbers: # Arguments support multiple tracking numbers
+    if args.get_api_key:
+        print("The current API key being used is: {}".format(api_key))
+        if api_key_from_env:
+            print("API key is being sourced from environment variable {}".format(API_KEY_ENV_VAR))
+        else:
+            print("API key is being sourced from configuration file: {}".format(config_file_path))
+        sys.exit(0)
+    elif args.tracking_numbers: # Arguments support multiple tracking numbers
         track_ids = args.tracking_numbers
     else:
         track_id = input('Enter tracking numbers separated by spaces: ') # User input supports multiple tracking numbers split with spaces
