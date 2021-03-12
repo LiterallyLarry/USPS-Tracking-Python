@@ -41,11 +41,6 @@ def main():
         api_key = os.getenv(API_KEY_ENV_VAR)
         api_key_from_env = True
 
-    if not api_key:
-        print("Error: Could not find USPS API key! Please provide one in {} or as environment variable {}".format(API_KEY_CONFIG_FILE, API_KEY_ENV_VAR))
-        print("Location of {}: {}".format(API_KEY_CONFIG_FILE, config_file_path))
-        sys.exit(2)
-
     parser = argparse.ArgumentParser(description="Tracks USPS numbers via Python.")
 
     parser.add_argument("tracking_numbers", metavar="TRACKING_NUMBER", type=str, nargs="*",
@@ -59,14 +54,27 @@ def main():
     parser.add_argument("-m", action="store_true", default=False,
                         dest="show_minimal",
                         help="Display tracking information concisely (minimal UI)")
-    parser.add_argument("-a", action="store_true", default=False,
-                        dest="get_api_key",
+    parser.add_argument("-d", action="store_true", default=False,
+                        dest="display_api_key",
                         help="Display the API key currently being used")
+    parser.add_argument("-a", action="store", default=None,
+                        dest="usps_api_key",
+                        help="Manually provide the USPS API key to the program")
     
     args = parser.parse_args()
-    if args.get_api_key:
+
+    if args.usps_api_key is not None:
+        api_key = args.usps_api_key
+    elif not api_key:
+        print("Error: Could not find USPS API key! Please provide one in {} or as environment variable {}".format(API_KEY_CONFIG_FILE, API_KEY_ENV_VAR))
+        print("Location of {}: {}".format(API_KEY_CONFIG_FILE, config_file_path))
+        sys.exit(2)
+
+    if args.display_api_key:
         print("The current API key being used is: {}".format(api_key))
-        if api_key_from_env:
+        if args.usps_api_key is not None:
+            print("API key is being manually provided by -a parameter")
+        elif api_key_from_env:
             print("API key is being sourced from environment variable {}".format(API_KEY_ENV_VAR))
         else:
             print("API key is being sourced from configuration file: {}".format(config_file_path))
@@ -78,20 +86,25 @@ def main():
         if len(track_id) < 1:
             exit(0)
         track_ids = track_id.split(" ")
+
     real = []
     for id in track_ids:
         if id[0] != "#":
             real.append(id)
+
     track_ids = real
     track_xml = usps_track(api_key, track_ids)
     track_result = ElementTree.ElementTree(ElementTree.fromstring(track_xml))
+    
     if track_result.getroot().tag == "Error":
         error_number = track_result.find("Number").text
         error_message = track_result.find("Description").text
         print("An error has occurred (Error Number {}):\n{}".format(error_number, error_message))
         sys.exit(2)
+    
     for result in track_result.findall("Description"):
         print(result.text)
+    
     for number, result in enumerate(track_result.findall(".//TrackInfo")):
         if args.show_tracking_number:
             track_num = " ({})".format(track_ids[number])

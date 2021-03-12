@@ -9,8 +9,8 @@ IMPORTANT: You must provide your API key first before using.
 Sign up at: https://www.usps.com/business/web-tools-apis/welcome.htm
 
 You may provide the USPS API key in the config.json file or as an 
-environment variable: `USPS_API_KEY`
-which is used if program does not see an API key in the config.json file.
+environment variable: `USPS_API_KEY`, please refer to the [Providing API key](#Providing API key) 
+section for more information.
 
 ## Installation
 
@@ -20,9 +20,17 @@ Available through PyPI: https://pypi.org/project/usps-tracking-tool/
 
 After installing, you can run this program by using the command `usps-tracking-tool`.
 
-## Providing API key as environment variable
+## Providing API key
 
-You can set the API key in your CLI by using the below command matching your OS/terminal:
+This program checks for the USPS API key using the following order:
+
+1. API key passed in via the -a parameter.
+2. API key provided in the config.json file.
+3. API key provided in the environment variable `USPS_API_KEY`.
+
+## Providing API key as environment avariable
+
+You can set the API key in your CLI by using the below command (matching your OS/terminal):
 
 Unix Shell (Linux/MacOS):
 `export USPS_API_KEY=your_api_key_here`
@@ -84,7 +92,7 @@ You can use arguments to change the output format, like so:
 
 ```
 user@system:~$ usps-tracking-tool -h
-usage: usps-tracking-tool [-h] [-s] [-n] [-m] [-a]
+usage: usps-tracking-tool [-h] [-s] [-n] [-m] [-d] [-a USPS_API_KEY]
                    [TRACKING_NUMBER [TRACKING_NUMBER ...]]
 
 Tracks USPS numbers via Python.
@@ -97,7 +105,8 @@ optional arguments:
   -s               Show tracking number in output
   -n               Hide extended tracking information
   -m               Display tracking information concisely (minimal UI)
-  -a               Display the API key currently being used
+  -d               Display the API key currently being used
+  -a USPS_API_KEY  Manually provide the USPS API key to the program
 ```
 
 ```
@@ -120,9 +129,15 @@ Your item was delivered at 6:14 pm on July 6, 2017 in PHILADELPHIA, PA 19104.
 ```
 
 ```
-user@system:~$ usps-tracking-tool -a
+user@system:~$ usps-tracking-tool -a API_KEY_HERE
 The current API key being used is: API_KEY_HERE
 API key is being sourced from environment variable USPS_API_KEY
+```
+
+```
+user@system:~$ usps-tracking-tool -a API_KEY_HERE -d
+The current API key being used is: API_KEY_HERE
+API key is being manually provided by -a parameter
 ```
 
 This program was tested with Python 3.5.3 on Debian 10, Python 3.6.8 on Ubuntu 18.04, and may not be compatible with previous releases.
