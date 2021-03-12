@@ -9,7 +9,7 @@ IMPORTANT: You must provide your API key first before using.
 Sign up at: https://www.usps.com/business/web-tools-apis/welcome.htm
 
 You may provide the USPS API key in the config.json file or as an 
-environment variable: `USPS_API_KEY`, please refer to the [Providing API key](#Providing API key) 
+environment variable: `USPS_API_KEY`, please see the [Providing API key](#providing-api-key) 
 section for more information.
 
 ## Installation
@@ -28,17 +28,22 @@ This program checks for the USPS API key using the following order:
 2. API key provided in the config.json file.
 3. API key provided in the environment variable `USPS_API_KEY`.
 
-## Providing API key as environment avariable
+If an API key is not found in any of these places, the program will output an error and exit.
 
-You can set the API key in your CLI by using the below command (matching your OS/terminal):
+## Providing API key as an environment variable
+
+You can set the API key in your CLI by using the below commands (matching your OS/terminal):
 
 Unix Shell (Linux/MacOS):
+
 `export USPS_API_KEY=your_api_key_here`
 
 Command Prompt (Windows):
+
 `set USPS_API_KEY=your_api_key_here`
 
 Windows PowerShell (Windows):
+
 `$Env:USPS_API_KEY = "your_api_key_here"`
 
 ## Usage
@@ -56,7 +61,7 @@ usps-tracking-tool ABC1234567890 DEF1234567890 GHI1234567890
 
 If you run the program without a tracking number, it will prompt you for a tracking number (you may input multiple tracking numbers by separating them with spaces).
 
-## Example
+## Examples
 
 ```
 user@system:~$ usps-tracking-tool
@@ -88,7 +93,7 @@ Package #3:
  The Postal Service could not locate the tracking information for your request. Please verify your tracking number and try again later.
 ```
 
-You can use arguments to change the output format, like so:
+##### You can use arguments to change the output format, like so:
 
 ```
 user@system:~$ usps-tracking-tool -h
@@ -128,15 +133,19 @@ user@system:~$ usps-tracking-tool ABC1234567890 -mn
 Your item was delivered at 6:14 pm on July 6, 2017 in PHILADELPHIA, PA 19104.
 ```
 
+##### Check where the API key is being sourced from
+
 ```
-user@system:~$ usps-tracking-tool -a API_KEY_HERE
+user@system:~$ usps-tracking-tool -d
 The current API key being used is: API_KEY_HERE
 API key is being sourced from environment variable USPS_API_KEY
 ```
 
+##### Manually provided API key
+
 ```
-user@system:~$ usps-tracking-tool -a API_KEY_HERE -d
-The current API key being used is: API_KEY_HERE
+user@system:~$ usps-tracking-tool -a MANUALLY_PROVIDED_API_KEY -d
+The current API key being used is: MANUALLY_PROVIDED_API_KEY
 API key is being manually provided by -a parameter
 ```
 
