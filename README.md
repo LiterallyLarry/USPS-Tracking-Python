@@ -1,23 +1,37 @@
 # USPS-Tracking-Python
 ![PyPI - License](https://img.shields.io/pypi/l/usps-tracking-tool) ![PyPI](https://img.shields.io/pypi/v/usps-tracking-tool)
 
-Track your packages with the USPS Track Request API using Python 3.
+Command line utility to track your packages using the USPS Track Request API.
 
-A simple CLI package tracking tool with no dependencies required.
+A simple CLI package tracking tool with no Python dependencies required.
 
-IMPORTANT: You must provide your API key in config.json first before using.
+IMPORTANT: You must provide your API key first before using.
 Sign up at: https://www.usps.com/business/web-tools-apis/welcome.htm
 
-You may also provide the USPS API key as an environment variable: `USPS_API_KEY`
-which can be used if program does not see an API key in the config.json file.
+You may provide the USPS API key in the config.json file or as an 
+environment variable: `USPS_API_KEY`
+which is used if program does not see an API key in the config.json file.
 
 ## Installation
 
 Available through PyPI: https://pypi.org/project/usps-tracking-tool/
 
-`pip3 install usps_tracking_tool`
+`pip3 install usps-tracking-tool`
 
-After installing, you can run this program in the command line by using the command `usps_tracking_tool`.
+After installing, you can run this program by using the command `usps-tracking-tool`.
+
+## Providing API key as environment variable
+
+You can set the API key in your CLI by using the below command matching your OS/terminal:
+
+Unix Shell (Linux/MacOS):
+`export USPS_API_KEY=your_api_key_here`
+
+Command Prompt (Windows):
+`set USPS_API_KEY=your_api_key_here`
+
+Windows PowerShell (Windows):
+`$Env:USPS_API_KEY = "your_api_key_here"`
 
 ## Usage
 
