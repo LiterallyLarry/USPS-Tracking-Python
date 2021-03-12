@@ -11,7 +11,7 @@ from sys import argv
 from xml.etree import ElementTree
 import argparse, json, sys, os
 
-USPS_API_URL = "http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2"
+USPS_API_URL = "https://production.shippingapis.com/ShippingAPI.dll?API=TrackV2"
 API_KEY_CONFIG_FILE = "config.json"
 API_KEY_ENV_VAR = "USPS_API_KEY"
 
