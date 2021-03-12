@@ -66,8 +66,9 @@ def main():
     if args.usps_api_key is not None:
         api_key = args.usps_api_key
     elif not api_key:
-        print("Error: Could not find USPS API key! Please provide one in {} or as environment variable {}".format(API_KEY_CONFIG_FILE, API_KEY_ENV_VAR))
-        print("Location of {}: {}".format(API_KEY_CONFIG_FILE, config_file_path))
+        print("Error: Could not find USPS API key!")
+        print("Please provide one in the {} file, as environment variable {}, or pass it in manually using the -a parameter.".format(API_KEY_CONFIG_FILE, API_KEY_ENV_VAR))
+        print("Location of {} is: {}".format(API_KEY_CONFIG_FILE, config_file_path))
         sys.exit(2)
 
     if args.display_api_key:
