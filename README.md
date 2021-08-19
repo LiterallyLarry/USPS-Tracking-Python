@@ -5,8 +5,12 @@ Command line utility to track your packages using the USPS Track Request API.
 
 A simple CLI package tracking tool with no Python dependencies required.
 
-IMPORTANT: You must provide your API key first before using.
+IMPORTANT: This program requires an API key from the USPS Web Tools API Portal.
+
 Sign up at: https://www.usps.com/business/web-tools-apis/welcome.htm
+
+After signing up you will receive a registration e-mail containing a Web Tools User ID (Username) and Password.
+The API key will be the username, the Track Request API does not require the password.
 
 You may provide the USPS API key in the config.json file or as an 
 environment variable: `USPS_API_KEY`, please see the [Providing API key](#providing-api-key) 
@@ -22,7 +26,7 @@ After installing, you can run this program by using the command `usps-tracking-t
 
 ## Providing API key
 
-This program checks for the USPS API key using the following order:
+This program checks for the USPS API key (Web Tools User ID) using the following order:
 
 1. API key passed in via the -a parameter.
 2. API key provided in the config.json file.
