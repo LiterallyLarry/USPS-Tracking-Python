@@ -1,6 +1,11 @@
 # USPS-Tracking-Python
 ![PyPI - License](https://img.shields.io/pypi/l/usps-tracking-tool) ![PyPI](https://img.shields.io/pypi/v/usps-tracking-tool)
 
+> [!WARNING]  
+> According to the USPS API Functional Team: The USPS Web Tools API platform will be retired on January 25, 2026.
+> Although at the time of this writing (February 1, 2026) tracking requests are still functioning eventually, it is highly likely this endpoint will no longer function.
+> For more information on this, [please check the issue page created here](https://github.com/LiterallyLarry/USPS-Tracking-Python/issues/5).
+
 Command line utility to track your packages using the USPS Track Request API.
 
 A simple CLI package tracking tool with no Python dependencies required.
